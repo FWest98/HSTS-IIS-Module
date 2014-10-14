@@ -1,0 +1,50 @@
+apply plugin: 'base'
+
+task candleWIX(type:Exec) {
+	description 'Preprocesses and compiles WiX source files into object files.'
+	dependsOn ":module:moduleSharedLibrary", ":manager:compileCS"
+
+	FileTree src = fileTree(dir: 'src/main/wix')
+	src.include '**/*.wxs'
+
+	File out = file('build/wix/' + rootProject.name + '-' + rootProject.version + '.wixobj')
+
+	inputs.files src
+	outputs.files out
+
+	executable file("${System.env.WIX}bin\\candle.exe")
+	args '""-ext WixUtilExtension""'
+	args '""-ext WixIisExtension""'
+	args '""-arch x64""'
+	args '""-out ' + out + '""'
+	args src
+	standardOutput = new ByteArrayOutputStream()
+
+	logger.info(standardOutput.toString())
+}
+
+task lightWIX(type:Exec) {
+	description 'Links and binds one or more .wixobj files and creates a Windows Installer database.'
+	dependsOn candleWIX
+
+	FileCollection src = candleWIX.outputs.files //file('build/wix/' + rootProject.name + '-' + rootProject.version + '.wixobj')
+	File out = file('build/bin/' + rootProject.name + '-' + rootProject.version + '.msi')
+	
+	inputs.files src
+	outputs.files out
+
+	executable file("${System.env.WIX}bin\\light.exe")
+	args '""-ext WixUtilExtension""'
+	args '""-ext WixUIExtension""'
+	args '""-ext WixIisExtension""'
+	args '""-out ' + out + '""'
+	args src
+	standardOutput = new ByteArrayOutputStream()
+
+	logger.info(standardOutput.toString())
+}
+
+task buildInstaller {
+	description 'Build the MSI installer.'
+	dependsOn lightWIX
+}

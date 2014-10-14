@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Product Id="41D4D03E-5809-4CE0-9FCF-37CF9AD18F4C" Name="HSTS IIS Module" Language="1033" Version="2.0.0.0" Manufacturer="All the Ducks Pty. Ltd." UpgradeCode="0CF5601D-6615-4DA3-8CE2-D3C828C787E5">
+    <Package Platform="x64" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <Condition Message="You need to be an administrator to install this [ProductName].">
+      Privileged
+    </Condition>
+
+    <UIRef Id="WixUI_Mondo" />
+    <WixVariable Id="WixUILicenseRtf" Value="src/main/resources/license.rtf" />
+
+    <Media Id="1" EmbedCab="yes" Cabinet="hsts.cab"/>
+
+    <Feature Id="Complete" Title="HSTS IIS Module" Level="1">
+      <ComponentRef Id="HstsIisModuleDLL" />
+      <ComponentRef Id="SchemaXML" />
+      <ComponentRef Id="ApplicationHostSectionElement" />
+      <ComponentRef Id="ApplicationHostModuleAddElement" />
+      <ComponentRef Id="ApplicationHostLocationModuleAddElement" />
+      <ComponentRef Id="ApplicationHostGlobalModuleAddElement" />
+      
+      <ComponentRef Id="ManagerDLL" />
+      <ComponentRef Id="AdministrationModuleProviderAddElement" />
+      <ComponentRef Id="AdministrationModuleAddElement" />
+    </Feature>
+
+    <SetDirectory Id="InetsrvDir" Value="[System64Folder]inetsrv\" />
+    <PropertyRef Id="IISMAJORVERSION"/>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Component Id="ManagerDLL" Guid="74394DFD-F6A9-4F38-9E02-33834E2C75AD" Win64="yes">
+        <File Id='ManagerDLL' Name='HSTS-IIS-Module.manager.dll' Source='../manager/build/bin/HSTS-IIS-Module.manager.dll' KeyPath='yes' Assembly=".net" />
+      </Component>
+      <Component Id='AdministrationModuleProviderAddElement' Guid='515899FA-14F5-461A-842E-A3DB0EE8E5AD' Win64='yes'>
+        <util:XmlConfig Id='AdministrationModuleProviderAddElement' On='install' Action='create'
+                        File='[InetsrvDir]config\administration.config' Node='element'
+                        ElementPath='/configuration/moduleProviders' Name='add' Sequence='1'
+                        VerifyPath="/configuration/moduleProviders/add[\[]@name='hsts'[\]]" />
+        <util:XmlConfig Id='AdministrationModuleProviderNameAttrib' File='[InetsrvDir]config\administration.config'
+                        ElementPath='AdministrationModuleProviderAddElement' Sequence='2' Name='name' Value='hsts' />
+        <util:XmlConfig Id='AdministrationModuleProviderTypeAttrib' File='[InetsrvDir]config\administration.config'
+                        ElementPath='AdministrationModuleProviderAddElement' Sequence='3' Name='type'
+                        Value='HSTS_IIS_Module.Manager.ConfigModuleProvider, HSTS-IIS-Module.manager, Version=2.0.0.0, Culture=neutral, PublicKeyToken=eafe09d4eb48c4e0, processorArchitecture=MSIL' />
+        <util:XmlConfig Id='AdministrationModuleProviderAddElementRemove' On='uninstall' Action='delete'
+                        File='[InetsrvDir]config\administration.config' Node='element'
+                        ElementPath="/configuration/moduleProviders" Sequence='101'
+                        VerifyPath="/configuration/moduleProviders/add[\[]@name='hsts'[\]]" />
+      </Component>
+      <Component Id='AdministrationModuleAddElement' Guid='49AAE2B7-720E-4BA9-AC1F-C220E59568C8' Win64='yes'>
+        <util:XmlConfig Id='AdministrationModuleAddElement' On='install' Action='create'
+                        File='[InetsrvDir]config\administration.config' Node='element'
+                        ElementPath="/configuration/location[\[]@path='.'[\]]/modules" Name='add' Sequence='4'
+                        VerifyPath="/configuration/location[\[]@path='.'[\]]/modules/add[\[]@name='hsts'[\]]" />
+        <util:XmlConfig Id='AdministrationModuleNameAttrib' File='[InetsrvDir]config\administration.config'
+                        ElementPath='AdministrationModuleAddElement' Sequence='5' Name='name' Value='hsts' />
+        <util:XmlConfig Id='AdministrationModuleAddElementRemove' On='uninstall' Action='delete'
+                        File='[InetsrvDir]config\administration.config' Node='element'
+                        ElementPath="/configuration/location[\[]@path='.'[\]]/modules" Sequence='102'
+                        VerifyPath="/configuration/location[\[]@path='.'[\]]/modules/add[\[]@name='hsts'[\]]" />
+      </Component>
+      <Component Id='ApplicationHostSectionElement' Guid='3481E86B-433F-4346-BF1A-44805012DD6A' Win64='yes'>
+        <util:XmlConfig Id='ApplicationHostSectionElement' On='install' Action='create'
+                        File='[InetsrvDir]config\applicationHost.config' Node='element'
+                        ElementPath="/configuration/configSections/sectionGroup[\[]@name='system.webServer'[\]]" Name="section" Sequence="6"
+                        VerifyPath="/configuration/configSections/sectionGroup[\[]@name='system.webServer'[\]]/section[\[]@name='hsts'[\]]" />
+        <util:XmlConfig Id='ApplicationHostSectionNameAttrib' File='[InetsrvDir]config\applicationHost.config'
+                        ElementPath='ApplicationHostSectionElement' Sequence='7' Name='name' Value='hsts' />
+        <util:XmlConfig Id='ApplicationHostSectionOverrideAttrib' File='[InetsrvDir]config\applicationHost.config'
+                        ElementPath='ApplicationHostSectionElement' Sequence='8' Name='overrideModeDefault' Value='Allow' />
+        <util:XmlConfig Id='ApplicationHostSectionElementRemove' On='uninstall' Action='delete'
+                        File='[InetsrvDir]config\applicationHost.config' Node='element'
+                        ElementPath="/configuration/configSections/sectionGroup[\[]@name='system.webServer'[\]]" Sequence='103'
+                        VerifyPath="/configuration/configSections/sectionGroup[\[]@name='system.webServer'[\]]/section[\[]@name='hsts'[\]]" />
+      </Component>
+      <Component Id='ApplicationHostModuleAddElement' Guid='621A4292-B1CF-42BA-ABA3-8DC6E9B8B9F2' Win64='yes'>
+        <Condition><![CDATA[Installed OR (IISMAJORVERSION AND IISMAJORVERSION >= "#8")]]></Condition>
+        <util:XmlConfig Id='ApplicationHostModuleAddElement' On='install' Action='create'
+                        File='[InetsrvDir]config\applicationHost.config' Node='element'
+                        ElementPath="/configuration/system.webServer/modules" Name="add" Sequence="10"
+                        VerifyPath="/configuration/system.webServer/modules/add[\[]@name='HstsIisModule'[\]]" />
+        <util:XmlConfig Id='ApplicationHostModuleNameAttrib' File='[InetsrvDir]config\applicationHost.config'
+                        ElementPath='ApplicationHostModuleAddElement' Sequence='11' Name='name' Value='HstsIisModule' />
+        <util:XmlConfig Id='ApplicationHostModuleAddElementRemove' On='uninstall' Action='delete'
+                        File='[InetsrvDir]config\applicationHost.config' Node='element'
+                        ElementPath="/configuration/system.webServer/modules" Sequence='104'
+                        VerifyPath="/configuration/system.webServer/modules/add[\[]@name='HstsIisModule'[\]]" />
+      </Component>
+      <Component Id='ApplicationHostLocationModuleAddElement' Guid='A44EEABB-796D-416E-97AA-49A2BED9D6F4' Win64='yes'>
+        <Condition><![CDATA[Installed OR (IISMAJORVERSION AND IISMAJORVERSION = "#7")]]></Condition>
+        <util:XmlConfig Id='ApplicationHostLocationModuleAddElement' On='install' Action='create'
+                        File='[InetsrvDir]config\applicationHost.config' Node='element'
+                        ElementPath="/configuration/location[\[]@path=''[\]]/system.webServer/modules" Name="add" Sequence="13"
+                        VerifyPath="/configuration/location[\[]@path=''[\]]/system.webServer/modules/add[\[]@name='HstsIisModule'[\]]" />
+        <util:XmlConfig Id='ApplicationHostLocationModuleNameAttrib' File='[InetsrvDir]config\applicationHost.config'
+                        ElementPath='ApplicationHostLocationModuleAddElement' Sequence='14' Name='name' Value='HstsIisModule' />
+        <util:XmlConfig Id='ApplicationHostLocationModuleAddElementRemove' On='uninstall' Action='delete'
+                        File='[InetsrvDir]config\applicationHost.config' Node='element'
+                        ElementPath="/configuration/location[\[]@path=''[\]]/system.webServer/modules" Sequence='105'
+                        VerifyPath="/configuration/location[\[]@path=''[\]]/system.webServer/modules/add[\[]@name='HstsIisModule'[\]]" />
+      </Component>
+      <Component Id='ApplicationHostGlobalModuleAddElement' Guid='3605417F-5C93-4981-939E-18860ED4053D' Win64='yes'>
+        <util:XmlConfig Id='ApplicationHostGlobalModuleAddElement' On='install' Action='create'
+                        File='[InetsrvDir]config\applicationHost.config' Node='element'
+                        ElementPath="/configuration/system.webServer/globalModules" Name="add" Sequence="15"
+                        VerifyPath="/configuration/system.webServer/globalModules/add[\[]@name='HstsIisModule'[\]]" />
+        <util:XmlConfig Id='ApplicationHostGlobalModuleNameAttrib' File='[InetsrvDir]config\applicationHost.config'
+                        ElementPath='ApplicationHostGlobalModuleAddElement' Sequence='16' Name='name' Value='HstsIisModule' />
+        <util:XmlConfig Id='ApplicationHostGlobalModuleImageAttrib' File='[InetsrvDir]config\applicationHost.config'
+                        ElementPath='ApplicationHostGlobalModuleAddElement' Sequence='17' Name='image'
+                        Value='%windir%\System32\inetsrv\HstsIisModule.dll' />
+        <util:XmlConfig Id='ApplicationHostGlobalModuleAddElementRemove' On='uninstall' Action='delete'
+                        File='[InetsrvDir]config\applicationHost.config' Node='element'
+                        ElementPath="/configuration/system.webServer/globalModules" Sequence='106'
+                        VerifyPath="/configuration/system.webServer/globalModules/add[\[]@name='HstsIisModule'[\]]" />
+      </Component>
+      <Directory Id="InetsrvDir">
+        <Component Id="HstsIisModuleDLL" Guid="F5CF744D-ED1D-4C3C-877A-2941385AFEE1" Win64="yes">
+          <File Id="HstsIisModuleDLL" Name='HstsIisModule.dll' Source='../module/build/binaries/moduleSharedLibrary/HstsIisModule.dll' KeyPath='yes' />
+        </Component>
+        <Directory Id="InetsrvConfigDir" Name="config">
+          <Directory Id="InetsrvSchemaDir" Name="schema">
+            <Component Id="SchemaXML" Guid="909B41F6-EAD9-49B0-9073-FC93668C5BBC" Win64="yes">
+              <File Id="SchemaXML" Name='HSTS_schema.xml' Source='../module/src/module/resources/HSTS_Schema.xml' KeyPath='yes' />
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+  </Product>
+
+</Wix>

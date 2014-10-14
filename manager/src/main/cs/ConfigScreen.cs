@@ -1,0 +1,77 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using Microsoft.Web.Administration;
+
+namespace HSTS_IIS_Module.Manager
+{
+    public partial class ConfigScreen : UserControl
+    {
+        private string siteName;
+        ServerManager serverManager;
+        private ConfigSection configSection;
+
+        public ConfigScreen()
+        {
+            InitializeComponent();
+        }
+
+        public void Initialise(string siteName)
+        {
+            this.siteName = siteName;
+            serverManager = new ServerManager();
+
+            ReloadConfigSection();
+
+            checkEnableHSTS.Checked = configSection.Enabled;
+            checkInsecureRedirect.Checked = configSection.InsecureRedirect;
+            textMaxAge.Text = configSection.MaxAge.ToString();
+            checkIncludeSubDomains.Checked = configSection.IncludeSubDomains;
+
+            UpdateDisplay();
+        }
+
+        public void Save()
+        {
+            configSection.Enabled = checkEnableHSTS.Checked;
+            configSection.InsecureRedirect = checkInsecureRedirect.Checked;
+
+            Int64 maxAge;
+            if (Int64.TryParse(textMaxAge.Text, out maxAge))
+            {
+                configSection.MaxAge = maxAge;
+            }
+            else
+            {
+                configSection.MaxAge = 0;
+            }
+            configSection.IncludeSubDomains = checkIncludeSubDomains.Checked;
+
+            serverManager.CommitChanges();
+        }
+
+        private void ReloadConfigSection()
+        {
+            if (String.IsNullOrEmpty(siteName))
+            {
+                throw new Exception("Must 'Initialize' the component first.");
+            }
+            Configuration config = serverManager.GetWebConfiguration(siteName);
+            configSection = (ConfigSection)config.GetSection(ConfigSection.CONFIG_PATH, typeof(ConfigSection));
+        }
+
+        private void UpdateDisplay()
+        {
+            groupHSTSSettings.Enabled = checkEnableHSTS.Checked;
+        }
+
+        private void checkEnableHSTS_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateDisplay();
+        }
+
+    }
+}

@@ -1,0 +1,8 @@
+<configSchema>
+  <sectionSchema name="system.webServer/hsts">
+    <attribute name="max-age" type="uint" defaultValue="31536000" />
+    <attribute name="includeSubDomains" type="bool" defaultValue="false" />
+    <attribute name="enabled" type="bool" defaultValue="false" />
+    <attribute name="insecureRedirect" type="bool" defaultValue="false" />
+  </sectionSchema>
+</configSchema>

@@ -1,0 +1,5 @@
+include 'manager'
+include 'module'
+include 'installer'
+
+rootProject.name = 'HSTS-IIS-Module'
