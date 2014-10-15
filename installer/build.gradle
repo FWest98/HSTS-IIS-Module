@@ -18,9 +18,7 @@ task candleWIX(type:Exec) {
 	args '""-arch x64""'
 	args '""-out ' + out + '""'
 	args src
-	standardOutput = new ByteArrayOutputStream()
 
-	logger.info(standardOutput.toString())
 }
 
 task lightWIX(type:Exec) {
@@ -39,9 +37,7 @@ task lightWIX(type:Exec) {
 	args '""-ext WixIisExtension""'
 	args '""-out ' + out + '""'
 	args src
-	standardOutput = new ByteArrayOutputStream()
-
-	logger.info(standardOutput.toString())
+	
 }
 
 task buildInstaller {

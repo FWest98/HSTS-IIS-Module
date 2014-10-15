@@ -26,8 +26,6 @@ task compileCS(type:Exec) {
 	args '/keyfile:' + file('HSTS-IIS-Module-Key.snk')
 	args '/reference:' + project.ext.inetsrv + 'Microsoft.Web.Management.dll,' + project.ext.inetsrv + 'Microsoft.Web.Administration.dll'
 	args src
-	standardOutput = new ByteArrayOutputStream()
-
-	logger.info(standardOutput.toString())
+	
 }
 
