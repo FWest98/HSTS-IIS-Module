@@ -9,29 +9,43 @@
       Privileged
     </Condition>
 
-    <UIRef Id="WixUI_Mondo" />
+    <UIRef Id="WixUI_FeatureTree" />
     <WixVariable Id="WixUILicenseRtf" Value="src/main/resources/license.rtf" />
 
     <Media Id="1" EmbedCab="yes" Cabinet="hsts.cab"/>
 
-    <Feature Id="Complete" Title="HSTS IIS Module" Level="1">
+    <Feature Id="Complete" Title="HSTS IIS Module" Level="1" AllowAdvertise='no' Absent='disallow'>
+      <Feature Id="Module" Title="Module" Level="1" Absent='disallow' AllowAdvertise='no'>
+        <ComponentGroupRef Id="ModuleComponent" />
+      </Feature>
+      <Feature Id="Manager" Title="Manager" Level="1" AllowAdvertise='no' Absent='allow'>
+        <ComponentGroupRef Id="ManagerComponent" />
+      </Feature>
+      <!-- Empty component works around a bug with MSI adding "This feature will be installed to run from network." in by mistake -->
+      <ComponentRef Id="Empty" />
+    </Feature>
+
+    <ComponentGroup Id="ModuleComponent">
       <ComponentRef Id="HstsIisModuleDLL" />
       <ComponentRef Id="SchemaXML" />
       <ComponentRef Id="ApplicationHostSectionElement" />
       <ComponentRef Id="ApplicationHostModuleAddElement" />
       <ComponentRef Id="ApplicationHostLocationModuleAddElement" />
       <ComponentRef Id="ApplicationHostGlobalModuleAddElement" />
-      
+    </ComponentGroup>
+
+    <ComponentGroup Id="ManagerComponent">
       <ComponentRef Id="ManagerDLL" />
       <ComponentRef Id="AdministrationModuleProviderAddElement" />
       <ComponentRef Id="AdministrationModuleAddElement" />
-    </Feature>
+    </ComponentGroup>
 
     <SetDirectory Id="InetsrvDir" Value="[System64Folder]inetsrv\" />
     <PropertyRef Id="IISMAJORVERSION"/>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Component Id="ManagerDLL" Guid="74394DFD-F6A9-4F38-9E02-33834E2C75AD" Win64="yes">
+      <Component Id="Empty" Guid='252B0E98-2DDC-4EC2-AAB4-98E59B46B784' />
+      <Component Id="ManagerDLL" Guid='74394DFD-F6A9-4F38-9E02-33834E2C75AD' Win64="yes">
         <File Id='ManagerDLL' Name='HSTS-IIS-Module.manager.dll' Source='../manager/build/bin/HSTS-IIS-Module.manager.dll' KeyPath='yes' Assembly=".net" />
       </Component>
       <Component Id='AdministrationModuleProviderAddElement' Guid='515899FA-14F5-461A-842E-A3DB0EE8E5AD' Win64='yes'>
