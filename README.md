@@ -31,6 +31,7 @@ If you would like to compile the extension for yourself you will need a few prer
 
 ### Build ###
 To build the entire project:
+
 1. Download the source code (using git, or as zip)
 2. Open a command prompt
 3. Change to the source directory
