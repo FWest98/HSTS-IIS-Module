@@ -1,15 +1,28 @@
 apply plugin: 'base'
 
+ext {
+	insecureManagerHash = 'eafe09d4eb48c4e0'
+}
+
 task candleWIX(type:Exec) {
 	description 'Preprocesses and compiles WiX source files into object files.'
-	dependsOn ":module:moduleSharedLibrary", ":manager:compileCS"
+	dependsOn ":module:moduleSharedLibrary"
 
 	FileTree src = fileTree(dir: 'src/main/wix')
 	src.include '**/*.wxs'
 
+	FileTree managerdlls
+	if(project.hasProperty('managerHash')) {
+		managerdlls = fileTree(dir: '../manager/build/signed')
+	} else {
+		dependsOn ":manager:compileCS"
+		managerdlls = fileTree(dir: '../manager/build/bin')
+	}
+	managerdlls.include '**/*.dll'
+
 	File out = file('build/wix/' + rootProject.name + '-' + rootProject.version + '.wixobj')
 
-	inputs.files src
+	inputs.files src + managerdlls
 	outputs.files out
 
 	executable file("${System.env.WIX}bin\\candle.exe")
@@ -17,6 +30,13 @@ task candleWIX(type:Exec) {
 	args '""-ext WixIisExtension""'
 	args '""-arch x64""'
 	args '""-out ' + out + '""'
+	if(project.hasProperty('managerHash')) {
+		args '""-dmanagerHash=' + project.managerHash + '""'
+		args '""-dmanagerDllDir=manager/build/signed""'
+	} else {
+		args '""-dmanagerHash=' + project.ext.insecureManagerHash + '""'
+		args '""-dmanagerDllDir=manager/build/bin""'
+	}
 	args src
 
 }

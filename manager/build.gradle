@@ -13,19 +13,26 @@ task compileCS(type:Exec) {
 
 	FileTree src = fileTree(dir: 'src/main/cs')
 	src.include '**/*.cs'
-
-	File out = file('build/bin/' + rootProject.name + '.' + project.name + '.dll')
-	out.getParentFile().mkdirs()
-
 	inputs.files src
+
+	File out;
+	if(project.hasProperty('snk')) {
+		out = file('build/signed/' + rootProject.name + '.' + project.name + '.dll')
+	} else {
+		out = file('build/bin/' + rootProject.name + '.' + project.name + '.dll')
+	}
+	out.getParentFile().mkdirs()
 	outputs.files out
 	
 	executable new File(project.ext.dotnet, 'csc.exe')
 	args '/t:library'
 	args '/out:' + out
-	args '/keyfile:' + file('HSTS-IIS-Module-Key.snk')
+	if(project.hasProperty('snk')) {
+		args '/keyFile:' + file(project.snk)
+	} else {
+		args '/keyfile:' + file('keys/Insecure-HSTS-IIS-Module-Key.snk')
+	}
 	args '/reference:' + project.ext.inetsrv + 'Microsoft.Web.Management.dll,' + project.ext.inetsrv + 'Microsoft.Web.Administration.dll'
 	args src
 	
 }
-

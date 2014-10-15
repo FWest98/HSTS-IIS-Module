@@ -46,7 +46,7 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Component Id="Empty" Guid='252B0E98-2DDC-4EC2-AAB4-98E59B46B784' />
       <Component Id="ManagerDLL" Guid='74394DFD-F6A9-4F38-9E02-33834E2C75AD' Win64="yes">
-        <File Id='ManagerDLL' Name='HSTS-IIS-Module.manager.dll' Source='../manager/build/bin/HSTS-IIS-Module.manager.dll' KeyPath='yes' Assembly=".net" />
+        <File Id='ManagerDLL' Name='HSTS-IIS-Module.manager.dll' Source='../$(var.managerDllDir)/HSTS-IIS-Module.manager.dll' KeyPath='yes' Assembly=".net" />
       </Component>
       <Component Id='AdministrationModuleProviderAddElement' Guid='515899FA-14F5-461A-842E-A3DB0EE8E5AD' Win64='yes'>
         <util:XmlConfig Id='AdministrationModuleProviderAddElement' On='install' Action='create'
@@ -57,7 +57,7 @@
                         ElementPath='AdministrationModuleProviderAddElement' Sequence='2' Name='name' Value='hsts' />
         <util:XmlConfig Id='AdministrationModuleProviderTypeAttrib' File='[InetsrvDir]config\administration.config'
                         ElementPath='AdministrationModuleProviderAddElement' Sequence='3' Name='type'
-                        Value='HSTS_IIS_Module.Manager.ConfigModuleProvider, HSTS-IIS-Module.manager, Version=2.0.0.0, Culture=neutral, PublicKeyToken=eafe09d4eb48c4e0, processorArchitecture=MSIL' />
+                        Value='HSTS_IIS_Module.Manager.ConfigModuleProvider, HSTS-IIS-Module.manager, Version=2.0.0.0, Culture=neutral, PublicKeyToken=$(var.managerHash), processorArchitecture=MSIL' />
         <util:XmlConfig Id='AdministrationModuleProviderAddElementRemove' On='uninstall' Action='delete'
                         File='[InetsrvDir]config\administration.config' Node='element'
                         ElementPath="/configuration/moduleProviders" Sequence='101'

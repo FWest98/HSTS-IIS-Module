@@ -39,6 +39,15 @@ To build the entire project:
 
 The 'buildinstaller' task will build all of the sub-components and then build the installer. It will output the installer to installer/build/bin.
 
+### A note on Strong Name Signing ###
+The manager DLL must be signed in order to be installed into the Global Assembly Cache. It is a security issue to publish the private key used to sign the DLL which presents a bit of an issue. I wanted to ensure that the build process was as simple as possible so the instructions above will build the extension using a key that is included in the project and is therefore insecure. If you wish to build it with your own strong name key use the following commands:
+
+1. gradlew compileCS -Psnk=YourSNKFile.snk
+2. Locate the public key token of the generated file (you can use 'sn.exe -T path/to/file.dll' in the .NET SDK)
+3. gradlew buildinstaller -PmanagerHash=YourHash
+
+Note: the official downloads of the project are signed with a secure key, not the one included in the project. It is sad that others cannot build exactly the same artifacts that are downloaded from the project site, but this is the best compromise I could come up with. 
+
 ## Justification ##
 Whilst it is simple to add a custom header to an IIS site, there is no simple way to add the HSTS header in a way that is compliant with the draft specification (RFC 6797). Specifically from section 7.2:
 
