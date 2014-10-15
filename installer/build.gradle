@@ -25,7 +25,7 @@ task lightWIX(type:Exec) {
 	description 'Links and binds one or more .wixobj files and creates a Windows Installer database.'
 	dependsOn candleWIX
 
-	FileCollection src = candleWIX.outputs.files //file('build/wix/' + rootProject.name + '-' + rootProject.version + '.wixobj')
+	FileCollection src = candleWIX.outputs.files
 	File out = file('build/bin/' + rootProject.name + '-' + rootProject.version + '.msi')
 	
 	inputs.files src
