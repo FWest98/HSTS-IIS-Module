@@ -13,6 +13,7 @@ private:
 		IAppHostProperty            * pElemIncludeSubDomainsProp;
 		IAppHostProperty            * pElemEnabledProp;
 		IAppHostProperty            * pElemInsecureRedirectProp;
+		IAppHostProperty            * pElemPreloadProp;
 		IHttpSite                   * pHttpSite;
 
 		HRESULT hr;
@@ -24,15 +25,18 @@ private:
 		BSTR    bstrPropertyIncludeSubDomainsName;
 		BSTR    bstrPropertyEnabledName;
 		BSTR    bstrPropertyInsecureRedirectName;
+		BSTR    bstrPropertyPreloadName;
 
 		VARIANT vtPropertyMaxAgeName;
 		VARIANT vtPropertyIncludeSubDomainsName;
 		VARIANT vtPropertyEnabledName;
 		VARIANT vtPropertyInsecureRedirectName;
+		VARIANT vtPropertyPreloadName;
 		VARIANT vtMaxAgeValue;
 		VARIANT vtIncludeSubDomainsValue;
 		VARIANT vtEnabledValue;
 		VARIANT vtInsecureRedirectValue;
+		VARIANT vtPreloadValue;
 
 	void cleanup() 
 	{
@@ -54,6 +58,11 @@ private:
 		{
 			pElemEnabledProp->Release(); 
 			pElemEnabledProp = NULL;
+		}
+		if (pElemPreloadProp != NULL)
+		{
+			pElemPreloadProp->Release();
+			pElemPreloadProp = NULL;
 		}
 		if ( pParentElem != NULL )
 		{
@@ -79,6 +88,7 @@ private:
 		SysFreeString( bstrPropertyMaxAgeName );
 		SysFreeString( bstrPropertyIncludeSubDomainsName );
 		SysFreeString( bstrPropertyEnabledName );
+		SysFreeString(bstrPropertyPreloadName);
 
 		CoUninitialize();
 	}
@@ -101,6 +111,7 @@ public:
 		pElemMaxAgeProp            = NULL;
 		pElemIncludeSubDomainsProp = NULL;
 		pElemEnabledProp           = NULL;
+		pElemPreloadProp           = NULL;
 		pHttpSite                  = NULL;
 		bstrSiteName               = NULL;
 		bstrConfigCommitPath       = NULL;
@@ -112,6 +123,7 @@ public:
 		bstrPropertyIncludeSubDomainsName = SysAllocString( L"includeSubDomains" );
 		bstrPropertyEnabledName           = SysAllocString( L"enabled" );
 		bstrPropertyInsecureRedirectName  = SysAllocString( L"insecureRedirect" );
+		bstrPropertyPreloadName           = SysAllocString( L"preload" );
 
 		vtPropertyMaxAgeName.vt                 = VT_BSTR;
 		vtPropertyMaxAgeName.bstrVal            = bstrPropertyMaxAgeName;
@@ -121,6 +133,8 @@ public:
 		vtPropertyEnabledName.bstrVal           = bstrPropertyEnabledName;
 		vtPropertyInsecureRedirectName.vt       = VT_BSTR;
 		vtPropertyInsecureRedirectName.bstrVal  = bstrPropertyInsecureRedirectName;
+		vtPropertyPreloadName.vt                = VT_BSTR;
+		vtPropertyPreloadName.bstrVal           = bstrPropertyPreloadName;
 
 		//Initialize
 		hr = CoInitializeEx( NULL, COINIT_MULTITHREADED );
@@ -281,6 +295,22 @@ public:
 			return RQ_NOTIFICATION_FINISH_REQUEST;
 		}
 
+		hr = pElemProps->get_Item(vtPropertyPreloadName, &pElemPreloadProp);
+		if (FAILED(hr) || (pElemPreloadProp == NULL))
+		{
+			pProvider->SetErrorStatus(hr);
+			cleanup();
+			return RQ_NOTIFICATION_FINISH_REQUEST;
+		}
+
+		hr = pElemPreloadProp->get_Value(&vtPreloadValue);
+		if (FAILED(hr))
+		{
+			pProvider->SetErrorStatus(hr);
+			cleanup();
+			return RQ_NOTIFICATION_FINISH_REQUEST;
+		}
+
 		hr = pElemProps->get_Item( vtPropertyIncludeSubDomainsName, &pElemIncludeSubDomainsProp );
 		if ( FAILED( hr ) || ( pElemIncludeSubDomainsProp == NULL ) )
 		{
@@ -298,17 +328,21 @@ public:
 		}
 
 		bool includeSubDomains = V_BOOL( &vtIncludeSubDomainsValue );
+		bool preload = V_BOOL(&vtPreloadValue);
 		UINT iMaxAge = V_UINT( &vtMaxAgeValue );
 		char maxAge [11];
 		itoa(iMaxAge, maxAge, 10);
 
 		char hstsName[] = "Strict-Transport-Security";
-		// 27 for "max-age=" and "; includeSubDomains", 11 for max size of UINT, 1 to terminate
-		char * hstsValue = (char*)pHttpContext->AllocateRequestMemory( 39 );
+		// 27 for "max-age=" and "; includeSubDomains", 9 for "; preload", 11 for max size of UINT, 1 to terminate
+		char * hstsValue = (char*)pHttpContext->AllocateRequestMemory( 48 );
 		strcpy(hstsValue, "max-age=");
 		strcat(hstsValue, maxAge);
 		if(includeSubDomains) {
 			strcat(hstsValue, "; includeSubDomains");
+		}
+		if (preload) {
+			strcat(hstsValue, "; preload");
 		}
 		hr = pHttpResponse->SetHeader( hstsName, hstsValue, (USHORT)strlen(hstsValue), FALSE);
 		if ( FAILED( hr ) )

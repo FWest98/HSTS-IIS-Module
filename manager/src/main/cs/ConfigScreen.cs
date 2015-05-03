@@ -30,6 +30,7 @@ namespace HSTS_IIS_Module.Manager
             checkInsecureRedirect.Checked = configSection.InsecureRedirect;
             textMaxAge.Text = configSection.MaxAge.ToString();
             checkIncludeSubDomains.Checked = configSection.IncludeSubDomains;
+            checkPreload.Checked = configSection.Preload;
 
             UpdateDisplay();
         }
@@ -49,6 +50,7 @@ namespace HSTS_IIS_Module.Manager
                 configSection.MaxAge = 0;
             }
             configSection.IncludeSubDomains = checkIncludeSubDomains.Checked;
+            configSection.Preload = checkPreload.Checked;
 
             serverManager.CommitChanges();
         }
