@@ -11,6 +11,7 @@ namespace HSTS_IIS_Module.Manager
         public const string INCLUDE_SUB_DOMAINS_PARAMETER_NAME = "includeSubDomains";
         public const string ENABLED_PROPERTY_NAME = "enabled";
         public const string INSECURE_REDIRECT_NAME = "insecureRedirect";
+        public const string PRELOAD_NAME = "preload";
         public const string CONFIG_PATH = "system.webServer/hsts";
         
         public bool Enabled
@@ -25,11 +26,11 @@ namespace HSTS_IIS_Module.Manager
             }
         }
 
-        public Int64 MaxAge
+        public int MaxAge
         {
             get
             {
-                return (Int64)base[MAX_AGE_PARAMETER_NAME];
+                return (int)base[MAX_AGE_PARAMETER_NAME];
             }
             set
             {
@@ -58,6 +59,18 @@ namespace HSTS_IIS_Module.Manager
             set
             {
                 base[INSECURE_REDIRECT_NAME] = value;
+            }
+        }
+
+        public bool Preload 
+        {
+            get 
+            {
+                return (bool)base[PRELOAD_NAME];
+            }
+            set 
+            {
+                base[PRELOAD_NAME] = value;
             }
         }
     }

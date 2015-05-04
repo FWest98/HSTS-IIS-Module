@@ -51,7 +51,7 @@ task lightWIX(type:Exec) {
 	inputs.files src
 	outputs.files out
 
-	executable file("${System.env.WIX}bin\\light.exe")
+    executable file("${System.env.WIX}bin\\light.exe")
 	args '""-ext WixUtilExtension""'
 	args '""-ext WixUIExtension""'
 	args '""-ext WixIisExtension""'

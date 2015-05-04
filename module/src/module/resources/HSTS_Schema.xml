@@ -4,5 +4,6 @@
     <attribute name="includeSubDomains" type="bool" defaultValue="false" />
     <attribute name="enabled" type="bool" defaultValue="false" />
     <attribute name="insecureRedirect" type="bool" defaultValue="false" />
+    <attribute name="preload" type="bool" defaultValue="false" />
   </sectionSchema>
 </configSchema>

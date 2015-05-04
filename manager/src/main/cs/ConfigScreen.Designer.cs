@@ -32,6 +32,7 @@
             this.checkInsecureRedirect = new System.Windows.Forms.CheckBox();
             this.groupHSTSSettings = new System.Windows.Forms.GroupBox();
             this.checkIncludeSubDomains = new System.Windows.Forms.CheckBox();
+            this.checkPreload = new System.Windows.Forms.CheckBox();
             this.textMaxAge = new System.Windows.Forms.TextBox();
             this.labelMaxAge = new System.Windows.Forms.Label();
             this.groupHSTSSettings.SuspendLayout();
@@ -56,6 +57,7 @@
             this.groupHSTSSettings.Controls.Add(this.textMaxAge);
             this.groupHSTSSettings.Controls.Add(this.labelMaxAge);
             this.groupHSTSSettings.Controls.Add(this.checkInsecureRedirect);
+            this.groupHSTSSettings.Controls.Add(this.checkPreload);
             this.groupHSTSSettings.Location = new System.Drawing.Point(3, 23);
             this.groupHSTSSettings.Name = "groupHSTSSettings";
             this.groupHSTSSettings.Size = new System.Drawing.Size(290, 108);
@@ -98,6 +100,16 @@
             this.checkInsecureRedirect.TabIndex = 0;
             this.checkInsecureRedirect.Text = "Redirect Insecure Requests";
             this.checkInsecureRedirect.UseVisualStyleBackColor = true;
+            //
+            // checkPreload
+            //
+            this.checkPreload.AutoSize = true;
+            this.checkPreload.Location = new System.Drawing.Point(9, 89);
+            this.checkPreload.Name = "checkPreload";
+            this.checkPreload.Size = new System.Drawing.Size(122, 17);
+            this.checkPreload.TabIndex = 0;
+            this.checkPreload.Text = "Allow Preload";
+            this.checkPreload.UseVisualStyleBackColor = true;
             // 
             // ConfigScreen
             // 
@@ -122,6 +134,7 @@
         private System.Windows.Forms.CheckBox checkInsecureRedirect;
         private System.Windows.Forms.GroupBox groupHSTSSettings;
         private System.Windows.Forms.CheckBox checkIncludeSubDomains;
+        private System.Windows.Forms.CheckBox checkPreload;
         private System.Windows.Forms.TextBox textMaxAge;
         private System.Windows.Forms.Label labelMaxAge;
     }
