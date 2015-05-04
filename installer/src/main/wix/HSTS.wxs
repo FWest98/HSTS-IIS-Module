@@ -29,7 +29,6 @@
       <ComponentRef Id="HstsIisModuleDLL" />
       <ComponentRef Id="SchemaXML" />
       <ComponentRef Id="ApplicationHostSectionElement" />
-      <ComponentRef Id="ApplicationHostModuleAddElement" />
       <ComponentRef Id="ApplicationHostLocationModuleAddElement" />
       <ComponentRef Id="ApplicationHostGlobalModuleAddElement" />
     </ComponentGroup>
