@@ -40,8 +40,8 @@ namespace HSTS_IIS_Module.Manager
             configSection.Enabled = checkEnableHSTS.Checked;
             configSection.InsecureRedirect = checkInsecureRedirect.Checked;
 
-            Int64 maxAge;
-            if (Int64.TryParse(textMaxAge.Text, out maxAge))
+            int maxAge;
+            if (int.TryParse(textMaxAge.Text, out maxAge))
             {
                 configSection.MaxAge = maxAge;
             }
