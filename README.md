@@ -63,3 +63,5 @@ An additional driver for such a module is the seriousness of attack vectors such
 Thanks to Phill from [Dionach](http://www.dionach.com/) for the fantastic [Strip Headers](https://github.com/Dionach/StripHeaders/) IIS extension which is, aside from a great extension, one of the best references for developing a native IIS module.
 
 Thanks also to everyone that has taken the time to reported issues and suggest improvements.
+
+Special thanks to @FWest98 for his commits.
