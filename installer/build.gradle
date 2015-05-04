@@ -25,7 +25,7 @@ task candleWIX(type:Exec) {
 	inputs.files src + managerdlls
 	outputs.files out
 
-	executable file("C:\\Program Files (x86)\\WiX Toolset v3.9\\bin\\candle.exe")
+	executable file("${System.env.WIX}bin\\candle.exe")
 	args '""-ext WixUtilExtension""'
 	args '""-ext WixIisExtension""'
 	args '""-arch x64""'
@@ -51,7 +51,7 @@ task lightWIX(type:Exec) {
 	inputs.files src
 	outputs.files out
 
-	executable file("C:\\Program Files (x86)\\WiX Toolset v3.9\\bin\\light.exe")
+    executable file("${System.env.WIX}bin\\light.exe")
 	args '""-ext WixUtilExtension""'
 	args '""-ext WixUIExtension""'
 	args '""-ext WixIisExtension""'
