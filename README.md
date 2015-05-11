@@ -4,7 +4,9 @@
 A module for IIS which enables HTTP Strict Transport Security compliant with the HSTS Draft Specification (RFC 6797). As of version 2.0 the module can be configured to redirect insecure requests.
 
 ## Downloads & Documentation ##
-[Downloads of the installers and binaries are available from the CodePlex project site, as is some Documentation.](https://hstsiis.codeplex.com)
+[Downloads of the installers and binaries are available from the CodePlex project site](https://hstsiis.codeplex.com)
+
+Documentation is made available [in the documentation folder](documentation) of this repository.  Documentation topics include [installation](documentation/Installation.md), [enabling HSTS](documentation/Enabling HSTS.md), and an assortment of [frequently asked questions](documentation/Frequently Asked Questions.md).
 
 ## Project Structure ##
 The project is split into three components: module, manager, installer.
