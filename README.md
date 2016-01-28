@@ -1,3 +1,7 @@
+#NOTICE#
+Due to lack of time, this project is no longer maintained. If you are interested in taking over ownership of the project, please contact me.
+
+
 # HSTS IIS Module #
 
 ## Project Description ##
