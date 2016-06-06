@@ -1,20 +1,18 @@
 # Installing the HSTS IIS Module
 This software is compatible with IIS 7.0 and above.
 
-> If you're using IIS 8.0 or above, there is a [known issue](https://github.com/AllTheDucks/hsts-iis-module/issues/1) with the installer.  It is recommended that you follow the steps for a manual installation below if you're using IIS 8 until the installer issues have been resolved.
-
 ## Using the installer
-The HSTS installer has been made available at Codeplex.  [Visit the download page](https://hstsiis.codeplex.com/downloads/get/921479) to download the latest release.
+The HSTS installer can be found at the [releases](https://github.com/FWest98/hsts-iis-module/releases)
 
 To install, follow the wizard's prompts.
 
 ## Manual installation
-The option to manually install the module and the Manager plugin for IIS is made available for those who prefer to have fine-grained control over the changes made to the server, or for installation on IIS 8.x.
+The option to manually install the module and the Manager plugin for IIS is made available for those who prefer to have fine-grained control over the changes made to the server.
 
 ### Module
-**1.** Download Module DLL, Manager DLL, and Schema XML from Codeplex.  [Visit the download page](https://hstsiis.codeplex.com/downloads/get/921479) to download these three files.
+**1.** Download Module DLL, Manager DLL, and Schema XML.  [Visit the download page](https://github.com/FWest98/hsts-iis-module/releases/latest) to download these three files.
 
-**2.** Copy the *module* DLL (HsstsIisModule.dll) to your inetsrv directory.  (%windir%\system32\inetsrv)
+**2.** Copy the *module* DLL (HstsIisModule.dll) to your inetsrv directory.  (%windir%\system32\inetsrv)
 
 **3.** Copy the HSTS_Schema.xml file to the inetsrv\config\schema directory. (%windir%\system32\inetsrv\config\schema)
 

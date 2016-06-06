@@ -16,9 +16,8 @@ Additionaly, as explained in "Why build this module?", I wanted to make configur
 
 ### I have a criticism, an idea, an issue, a request, want to say hello.
 Please feel free to contact me:
-* Email: hstsiis <a in a circle> shaneargo.net
-* Twitter: [@shane_argo](https://twitter.com/shane_argo)
-* Issues: Please log issues [here at GitHub](https://github.com/AllTheDucks/hsts-iis-module/issues)
+* Twitter: [@fwest98](https://twitter.com/fwest98)
+* Issues: Please log issues [here at GitHub](https://github.com/FWest98/hsts-iis-module/issues)
 
 ### I am running this module in production/test/x86/x64/Server 2K8/Server 2k12/giraffe/anything.
 That's not a question. But please tell me. I'd love to hear about it, especially if you are running it on a giraffe.
@@ -34,7 +33,7 @@ An example of this would be accessing your internet banking from home on your la
 
 Clearing the browser cache, history etc. does not clear the HSTS list. The list can be managed manually using in-built tools in the browser.
 
-### What browsers support HSTS?
-As this is an ever changing list, I will not provide a definitive list here. Generally speaking, most modern browsers support it, except Internet Explorer. For information check out the [OWASP wiki page](https://www.owasp.org/index.php/HTTP_Strict_Transport_Security).
+A way to make sure also the first request is 'safe' and not subject to a MITM-attack is to add your website to the HSTS Preload list. This is a list of domains that use HSTS, hardcoded in many browsers such as Firefox, Chrome, Safari, Internet Explorer and Edge. More information can be found [here](https://hstspreload.appspot.com/).
 
-Microsoft has [annouced support for HSTS](http://microsoft-news.com/good-news-microsoft-announces-support-for-http-strict-transport-security-in-internet-explorer-will-be-added-in-project-spartan-later/) in Internet Explorer 11 and in Microsoft Edge (formerly Project Spartan).
+### What browsers support HSTS?
+As this is an ever changing list, I will not provide a definitive list here. Generally speaking, most modern browsers support it, except Internet Explorer versions below 11. For information check out the [OWASP wiki page](https://www.owasp.org/index.php/HTTP_Strict_Transport_Security).
