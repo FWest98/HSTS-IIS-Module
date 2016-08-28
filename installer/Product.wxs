@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <Product Id="41D4D03E-5809-4CE0-9FCF-37CF9AD18F4C" Name="HSTS IIS Module" Language="1033" Version="2.1.0.0" Manufacturer="All the Ducks Pty. Ltd." UpgradeCode="0CF5601D-6615-4DA3-8CE2-D3C828C787E5">
+  <Product Id="41D4D03E-5809-4CE0-9FCF-37CF9AD18F4C" Name="HSTS IIS Module" Language="1033" Version="2.1.2.0" Manufacturer="Floris Westerman" UpgradeCode="0CF5601D-6615-4DA3-8CE2-D3C828C787E5">
     <Package Platform="x64" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -10,7 +10,7 @@
     </Condition>
 
     <UIRef Id="WixUI_FeatureTree" />
-    <WixVariable Id="WixUILicenseRtf" Value="src/main/resources/license.rtf" />
+    <WixVariable Id="WixUILicenseRtf" Value="resources/license.rtf" />
 
     <Media Id="1" EmbedCab="yes" Cabinet="hsts.cab"/>
 
@@ -45,7 +45,7 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Component Id="Empty" Guid='252B0E98-2DDC-4EC2-AAB4-98E59B46B784' />
       <Component Id="ManagerDLL" Guid='74394DFD-F6A9-4F38-9E02-33834E2C75AD' Win64="yes">
-        <File Id='ManagerDLL' Name='HSTS-IIS-Module.manager.dll' Source='../$(var.managerDllDir)/HSTS-IIS-Module.manager.dll' KeyPath='yes' Assembly=".net" />
+        <File Id='ManagerDLL' Name='HSTS-IIS-Module.Manager.dll' Source='$(var.HSTS IIS Manager.TargetDir)\$(var.HSTS IIS Manager.TargetFileName)' KeyPath='yes' Assembly=".net" />
       </Component>
       <Component Id='AdministrationModuleProviderAddElement' Guid='515899FA-14F5-461A-842E-A3DB0EE8E5AD' Win64='yes'>
         <util:XmlConfig Id='AdministrationModuleProviderAddElement' On='install' Action='create'
@@ -56,7 +56,7 @@
                         ElementPath='AdministrationModuleProviderAddElement' Sequence='2' Name='name' Value='hsts' />
         <util:XmlConfig Id='AdministrationModuleProviderTypeAttrib' File='[InetsrvDir]config\administration.config'
                         ElementPath='AdministrationModuleProviderAddElement' Sequence='3' Name='type'
-                        Value='HSTS_IIS_Module.Manager.ConfigModuleProvider, HSTS-IIS-Module.manager, Version=2.1.0.0, Culture=neutral, PublicKeyToken=$(var.managerHash), processorArchitecture=MSIL' />
+                        Value='HSTS_IIS_Module.Manager.ConfigModuleProvider, HSTS-IIS-Module.manager, Version=2.1.2.0, Culture=neutral, PublicKeyToken=!(bind.assemblyPublicKeyToken.ManagerDLL), processorArchitecture=MSIL' />
         <util:XmlConfig Id='AdministrationModuleProviderAddElementRemove' On='uninstall' Action='delete'
                         File='[InetsrvDir]config\administration.config' Node='element'
                         ElementPath="/configuration/moduleProviders" Sequence='101'
@@ -109,7 +109,7 @@
                         ElementPath='ApplicationHostGlobalModuleAddElement' Sequence='16' Name='name' Value='HstsIisModule' />
         <util:XmlConfig Id='ApplicationHostGlobalModuleImageAttrib' File='[InetsrvDir]config\applicationHost.config'
                         ElementPath='ApplicationHostGlobalModuleAddElement' Sequence='17' Name='image'
-                        Value='%windir%\System32\inetsrv\HstsIisModule.dll' />
+                        Value='%windir%\System32\inetsrv\$(var.HSTS IIS Module.TargetFileName)' />
         <util:XmlConfig Id='ApplicationHostGlobalModuleAddElementRemove' On='uninstall' Action='delete'
                         File='[InetsrvDir]config\applicationHost.config' Node='element'
                         ElementPath="/configuration/system.webServer/globalModules" Sequence='106'
@@ -117,12 +117,12 @@
       </Component>
       <Directory Id="InetsrvDir">
         <Component Id="HstsIisModuleDLL" Guid="F5CF744D-ED1D-4C3C-877A-2941385AFEE1" Win64="yes">
-          <File Id="HstsIisModuleDLL" Name='HstsIisModule.dll' Source='../module/build/binaries/moduleSharedLibrary/HstsIisModule.dll' KeyPath='yes' />
+          <File Id="HstsIisModuleDLL" Name='HSTS-IIS-Module.dll' Source='$(var.HSTS IIS Module.TargetDir)\$(var.HSTS IIS Module.TargetFileName)' KeyPath='yes' />
         </Component>
         <Directory Id="InetsrvConfigDir" Name="config">
           <Directory Id="InetsrvSchemaDir" Name="schema">
             <Component Id="SchemaXML" Guid="909B41F6-EAD9-49B0-9073-FC93668C5BBC" Win64="yes">
-              <File Id="SchemaXML" Name='HSTS_schema.xml' Source='../module/src/module/resources/HSTS_Schema.xml' KeyPath='yes' />
+              <File Id="SchemaXML" Name='HSTS_schema.xml' Source='$(var.HSTS IIS Module.ProjectDir)/resources/HSTS_Schema.xml' KeyPath='yes' />
             </Component>
           </Directory>
         </Directory>
