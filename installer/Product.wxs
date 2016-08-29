@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <Product Id="41D4D03E-5809-4CE0-9FCF-37CF9AD18F4C" Name="HSTS IIS Module" Language="1033" Version="2.1.2.0" Manufacturer="Floris Westerman" UpgradeCode="0CF5601D-6615-4DA3-8CE2-D3C828C787E5">
+  <Product Id="*" Name="HSTS IIS Module" Language="1033" Version="!(bind.FileVersion.ManagerDLL)" Manufacturer="Floris Westerman" UpgradeCode="0CF5601D-6615-4DA3-8CE2-D3C828C787E5">
     <Package Platform="x64" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -56,7 +56,7 @@
                         ElementPath='AdministrationModuleProviderAddElement' Sequence='2' Name='name' Value='hsts' />
         <util:XmlConfig Id='AdministrationModuleProviderTypeAttrib' File='[InetsrvDir]config\administration.config'
                         ElementPath='AdministrationModuleProviderAddElement' Sequence='3' Name='type'
-                        Value='HSTS_IIS_Module.Manager.ConfigModuleProvider, HSTS-IIS-Module.manager, Version=2.1.2.0, Culture=neutral, PublicKeyToken=!(bind.assemblyPublicKeyToken.ManagerDLL), processorArchitecture=MSIL' />
+                        Value='HSTS_IIS_Module.Manager.ConfigModuleProvider, HSTS-IIS-Module.manager, Version=!(bind.FileVersion.ManagerDLL), Culture=neutral, PublicKeyToken=!(bind.assemblyPublicKeyToken.ManagerDLL), processorArchitecture=MSIL' />
         <util:XmlConfig Id='AdministrationModuleProviderAddElementRemove' On='uninstall' Action='delete'
                         File='[InetsrvDir]config\administration.config' Node='element'
                         ElementPath="/configuration/moduleProviders" Sequence='101'

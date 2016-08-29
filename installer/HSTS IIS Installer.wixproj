@@ -46,7 +46,6 @@
     <Folder Include="resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="HSTS IIS Installer.wax" />
     <Content Include="resources\license.rtf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
