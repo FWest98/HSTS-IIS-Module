@@ -40,15 +40,8 @@ namespace HSTS_IIS_Module.Manager
             configSection.Enabled = checkEnableHSTS.Checked;
             configSection.InsecureRedirect = checkInsecureRedirect.Checked;
 
-            int maxAge;
-            if (int.TryParse(textMaxAge.Text, out maxAge))
-            {
-                configSection.MaxAge = maxAge;
-            }
-            else
-            {
-                configSection.MaxAge = 0;
-            }
+            long maxAge;
+            configSection.MaxAge = long.TryParse(textMaxAge.Text, out maxAge) ? maxAge : 0;
             configSection.IncludeSubDomains = checkIncludeSubDomains.Checked;
             configSection.Preload = checkPreload.Checked;
 
@@ -57,11 +50,11 @@ namespace HSTS_IIS_Module.Manager
 
         private void ReloadConfigSection()
         {
-            if (String.IsNullOrEmpty(siteName))
+            if (string.IsNullOrEmpty(siteName))
             {
                 throw new Exception("Must 'Initialize' the component first.");
             }
-            Configuration config = serverManager.GetWebConfiguration(siteName);
+            var config = serverManager.GetWebConfiguration(siteName);
             configSection = (ConfigSection)config.GetSection(ConfigSection.CONFIG_PATH, typeof(ConfigSection));
         }
 

@@ -1,7 +1,3 @@
-#NOTICE#
-Due to lack of time, this project is no longer maintained. If you are interested in taking over ownership of the project, please contact me.
-
-
 # HSTS IIS Module #
 
 ## Project Description ##
@@ -22,7 +18,7 @@ The 'module' sub-project is the work horse of the project. Developed in C++ the 
 The 'manager' sub-project is the extension to the IIS manager (inetmgr.exe) and is developed in C#. This component gives the user a graphical interface to the configuration options.
 
 ### installer ###
-Unsuprisingly, this subject produces an MSI installer which handles the copies the DLLs and modifies the IIS configuration. It is developed using the [WIX toolset](http://wixtoolset.org/).
+Unsurprisingly, this subject produces an MSI installer which handles the copies the DLLs and modifies the IIS configuration. It is developed using the [WIX toolset](http://wixtoolset.org/).
 
 ## Tooling ##
 The project uses some unconventional (within the Microsoft development environment) tooling. Specifically, the use of [Gradle](http://www.gradle.org/). I strongly believe in reducing the number of hurdles to first time developers. Ideally, someone who has no prior knowledge or skills without any tools installed, should be able to download and compile the project. Paid development tools such as Visual Studio obviously work against this. Yes, Visual Studio Express is free, but it doesn't allow for the installation of plugins and therefore WIX would need to be compiled extrnally. I also believe that IDEs such as Visual Studio can often make the process of compiling appear to be almost magical and can be very opaque.
@@ -70,4 +66,4 @@ Thanks to Phill from [Dionach](http://www.dionach.com/) for the fantastic [Strip
 
 Thanks also to everyone that has taken the time to reported issues and suggest improvements.
 
-Special thanks to @FWest98 for his commits.
+Special thanks to Shane Argo for the great work he has done for the first versions of this plugin!

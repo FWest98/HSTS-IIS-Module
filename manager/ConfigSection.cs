@@ -26,11 +26,11 @@ namespace HSTS_IIS_Module.Manager
             }
         }
 
-        public int MaxAge
+        public long MaxAge
         {
             get
             {
-                return (int)base[MAX_AGE_PARAMETER_NAME];
+                return (long) base[MAX_AGE_PARAMETER_NAME];
             }
             set
             {
