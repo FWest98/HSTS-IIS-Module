@@ -29,6 +29,7 @@
       <ComponentRef Id="HstsIisModuleDLL" />
       <ComponentRef Id="SchemaXML" />
       <ComponentRef Id="ApplicationHostSectionElement" />
+      <ComponentRef Id="ApplicationHostModuleAddElement" />
       <ComponentRef Id="ApplicationHostLocationModuleAddElement" />
       <ComponentRef Id="ApplicationHostGlobalModuleAddElement" />
     </ComponentGroup>
@@ -88,7 +89,21 @@
                         ElementPath="/configuration/configSections/sectionGroup[\[]@name='system.webServer'[\]]" Sequence='103'
                         VerifyPath="/configuration/configSections/sectionGroup[\[]@name='system.webServer'[\]]/section[\[]@name='hsts'[\]]" />
       </Component>
+      <Component Id='ApplicationHostModuleAddElement' Guid='621A4292-B1CF-42BA-ABA3-8DC6E9B8B9F2' Win64='yes'>
+        <Condition><![CDATA[Installed OR (IISMAJORVERSION AND NOT IISMAJORVERSION = "#7")]]></Condition>
+        <util:XmlConfig Id='ApplicationHostModuleAddElement' On='install' Action='create'
+                        File='[InetsrvDir]config\applicationHost.config' Node='element'
+                        ElementPath="/configuration/system.webServer/modules" Name="add" Sequence="10"
+                        VerifyPath="/configuration/system.webServer/modules/add[\[]@name='HstsIisModule'[\]]" />
+        <util:XmlConfig Id='ApplicationHostModuleNameAttrib' File='[InetsrvDir]config\applicationHost.config'
+                        ElementPath='ApplicationHostModuleAddElement' Sequence='11' Name='name' Value='HstsIisModule' />
+        <util:XmlConfig Id='ApplicationHostModuleAddElementRemove' On='uninstall' Action='delete'
+                        File='[InetsrvDir]config\applicationHost.config' Node='element'
+                        ElementPath="/configuration/system.webServer/modules" Sequence='104'
+                        VerifyPath="/configuration/system.webServer/modules/add[\[]@name='HstsIisModule'[\]]" />
+      </Component>
       <Component Id='ApplicationHostLocationModuleAddElement' Guid='A44EEABB-796D-416E-97AA-49A2BED9D6F4' Win64='yes'>
+        <Condition><![CDATA[Installed OR (IISMAJORVERSION AND IISMAJORVERSION = "#7")]]></Condition>
         <util:XmlConfig Id='ApplicationHostLocationModuleAddElement' On='install' Action='create'
                         File='[InetsrvDir]config\applicationHost.config' Node='element'
                         ElementPath="/configuration/location[\[]@path=''[\]]/system.webServer/modules" Name="add" Sequence="13"
@@ -117,7 +132,7 @@
       </Component>
       <Directory Id="InetsrvDir">
         <Component Id="HstsIisModuleDLL" Guid="F5CF744D-ED1D-4C3C-877A-2941385AFEE1" Win64="yes">
-          <File Id="HstsIisModuleDLL" Name='HSTS-IIS-Module.dll' Source='$(var.HSTS IIS Module.TargetDir)\$(var.HSTS IIS Module.TargetFileName)' KeyPath='yes' />
+          <File Id="HstsIisModuleDLL" Name='$(var.HSTS IIS Module.TargetFileName)' Source='$(var.HSTS IIS Module.TargetDir)\$(var.HSTS IIS Module.TargetFileName)' KeyPath='yes' />
         </Component>
         <Directory Id="InetsrvConfigDir" Name="config">
           <Directory Id="InetsrvSchemaDir" Name="schema">
@@ -130,5 +145,4 @@
     </Directory>
 
   </Product>
-
 </Wix>
