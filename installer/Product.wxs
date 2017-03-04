@@ -30,8 +30,9 @@
       <ComponentRef Id="SchemaXML" />
       <ComponentRef Id="ApplicationHostSectionElement" />
       <ComponentRef Id="ApplicationHostModuleAddElement" />
-      <ComponentRef Id="ApplicationHostLocationModuleAddElement" />
+      <!--<ComponentRef Id="ApplicationHostLocationModuleAddElement" />-->
       <ComponentRef Id="ApplicationHostGlobalModuleAddElement" />
+      <!--<ComponentRef Id="ApplicationHostModuleList"/>-->
     </ComponentGroup>
 
     <ComponentGroup Id="ManagerComponent">
@@ -90,20 +91,24 @@
                         VerifyPath="/configuration/configSections/sectionGroup[\[]@name='system.webServer'[\]]/section[\[]@name='hsts'[\]]" />
       </Component>
       <Component Id='ApplicationHostModuleAddElement' Guid='621A4292-B1CF-42BA-ABA3-8DC6E9B8B9F2' Win64='yes'>
-        <Condition><![CDATA[Installed OR (IISMAJORVERSION AND NOT IISMAJORVERSION = "#7")]]></Condition>
+        <!--<Condition><![CDATA[Installed OR (IISMAJORVERSION AND NOT IISMAJORVERSION = "#7")]]></Condition>-->
+        <!--<util:XmlConfig Id='ApplicationHostModuleList' On='install' Action='create'
+                        File='[InetsrvDir]config\applicationHost.config' Node='element'
+                        ElementPath="/configuration/system.webServer" Name="modules" Sequence="1"
+                        VerifyPath="/configuration//system.webServer/modules" />-->
         <util:XmlConfig Id='ApplicationHostModuleAddElement' On='install' Action='create'
                         File='[InetsrvDir]config\applicationHost.config' Node='element'
-                        ElementPath="/configuration/system.webServer/modules" Name="add" Sequence="10"
-                        VerifyPath="/configuration/system.webServer/modules/add[\[]@name='HstsIisModule'[\]]" />
+                        ElementPath="/configuration//system.webServer/modules" Name="add" Sequence="10"
+                        VerifyPath="/configuration//system.webServer/modules/add[\[]@name='HstsIisModule'[\]]" />
         <util:XmlConfig Id='ApplicationHostModuleNameAttrib' File='[InetsrvDir]config\applicationHost.config'
                         ElementPath='ApplicationHostModuleAddElement' Sequence='11' Name='name' Value='HstsIisModule' />
         <util:XmlConfig Id='ApplicationHostModuleAddElementRemove' On='uninstall' Action='delete'
                         File='[InetsrvDir]config\applicationHost.config' Node='element'
-                        ElementPath="/configuration/system.webServer/modules" Sequence='104'
-                        VerifyPath="/configuration/system.webServer/modules/add[\[]@name='HstsIisModule'[\]]" />
+                        ElementPath="/configuration//system.webServer/modules" Sequence='104'
+                        VerifyPath="/configuration//system.webServer/modules/add[\[]@name='HstsIisModule'[\]]" />
       </Component>
-      <Component Id='ApplicationHostLocationModuleAddElement' Guid='A44EEABB-796D-416E-97AA-49A2BED9D6F4' Win64='yes'>
-        <Condition><![CDATA[Installed OR (IISMAJORVERSION AND IISMAJORVERSION = "#7")]]></Condition>
+      <!--<Component Id='ApplicationHostLocationModuleAddElement' Guid='A44EEABB-796D-416E-97AA-49A2BED9D6F4' Win64='yes'>
+        <!-<Condition><![CDATA[Installed OR (IISMAJORVERSION AND IISMAJORVERSION = "#7")]]></Condition>-
         <util:XmlConfig Id='ApplicationHostLocationModuleAddElement' On='install' Action='create'
                         File='[InetsrvDir]config\applicationHost.config' Node='element'
                         ElementPath="/configuration/location[\[]@path=''[\]]/system.webServer/modules" Name="add" Sequence="13"
@@ -114,7 +119,7 @@
                         File='[InetsrvDir]config\applicationHost.config' Node='element'
                         ElementPath="/configuration/location[\[]@path=''[\]]/system.webServer/modules" Sequence='105'
                         VerifyPath="/configuration/location[\[]@path=''[\]]/system.webServer/modules/add[\[]@name='HstsIisModule'[\]]" />
-      </Component>
+      </Component>-->
       <Component Id='ApplicationHostGlobalModuleAddElement' Guid='3605417F-5C93-4981-939E-18860ED4053D' Win64='yes'>
         <util:XmlConfig Id='ApplicationHostGlobalModuleAddElement' On='install' Action='create'
                         File='[InetsrvDir]config\applicationHost.config' Node='element'
