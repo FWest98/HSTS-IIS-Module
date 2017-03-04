@@ -35,7 +35,7 @@
     </ProjectReference>
     <ProjectReference Include="..\module\HSTS IIS Module.vcxproj">
       <Name>HSTS IIS Module</Name>
-      <Project>{62dc9d78-388a-4533-8e57-6678cce36138}</Project>
+      <Project>{b697a6de-b20a-4dc3-90be-9d31de1d6bdf}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -46,6 +46,7 @@
     <Folder Include="resources\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="HSTS IIS Installer.wax" />
     <Content Include="resources\license.rtf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

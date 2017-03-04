@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DeployedProjects>
+    <string>manager\HSTS IIS Manager.csproj</string>
+    <string>module\HSTS IIS Module.vcxproj</string>
+  </DeployedProjects>
+  <DirectoryMappings>
+    <Item Key="" Value="InetsrvDir" />
+  </DirectoryMappings>
+  <FileMappings />
+  <DeploySymbols>false</DeploySymbols>
+</Configuration>

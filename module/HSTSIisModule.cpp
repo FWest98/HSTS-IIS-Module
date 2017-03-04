@@ -1,9 +1,6 @@
 // Win32Project1.cpp : Defines the exported functions for the DLL application.
 //
 
-#include "stdafx.h"
-
-
 #define _WINSOCKAPI_
 #include <httpserv.h>
 #include <comdef.h>
