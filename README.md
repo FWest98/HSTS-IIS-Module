@@ -1,3 +1,5 @@
+**NOTE** that since Windows Server 2019, this feature is provided out-of-the-box in IIS, and this plugin is no longer necessary.
+
 # HSTS IIS Module #
 
 ## Project Description ##
